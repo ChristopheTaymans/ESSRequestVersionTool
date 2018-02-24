@@ -1,0 +1,8 @@
+<mvc:View
+	controllerName="ess.request.version.tool.controller.App"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	height="100%"
+	xmlns="sap.m">
+	<NavContainer id="idAppControl" class="essRequestVersion"/>
+</mvc:View>

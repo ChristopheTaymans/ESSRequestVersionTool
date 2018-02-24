@@ -1,0 +1,94 @@
+<mvc:View controllerName="ess.request.version.tool.controller.Selection" 
+		  xmlns:mvc="sap.ui.core.mvc" 
+		  xmlns:core="sap.ui.core" 
+		  xmlns="sap.m"
+	      xmlns:f="sap.ui.layout.form" 
+	      xmlns:semantic="sap.m.semantic">
+	<semantic:FullscreenPage id="page" title="{i18n>Selectiontitle}">
+		<semantic:content>
+			<PullToRefresh id="pullToRefresh" 
+			               visible="{device>/support/touch}" 
+			               refresh="onPullToRefresh"/>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm editable="true" 
+				              layout="ResponsiveGridLayout" 
+				              title="{i18n>targetParameter}" 
+				              labelSpanXL="3" 
+				              labelSpanL="3" 
+				              labelSpanM="3"
+					          labelSpanS="12" 
+					          adjustLabelSpan="false" 
+					          emptySpanXL="4" 
+					          emptySpanL="4" 
+					          emptySpanM="4" 
+					          emptySpanS="0" 
+					          columnsXL="1" 
+					          columnsL="1" 
+					          columnsM="1"
+					          singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>targetlabel}"/>
+						<ComboBox id='targetSelection' 
+							      items="{/TargetSystemSet}" 
+							      selectionChange='_onSystemTarget'>
+							<core:ListItem key="{Sysname}|{Mandt}" 
+							               text="{Sysname} {Mandt}"/>
+						</ComboBox>
+					</f:content>
+				</f:SimpleForm>
+				<f:SimpleForm editable="true" 
+						      layout="ResponsiveGridLayout" 
+						      title="{i18n>SearchParameter}" 
+						      labelSpanXL="3" labelSpanL="3" 
+						      labelSpanM="3"
+					          labelSpanS="12" 
+					          adjustLabelSpan="false" 
+					          emptySpanXL="4" 
+					          emptySpanL="4" 
+					          emptySpanM="4" 
+					          emptySpanS="0" 
+					          columnsXL="1" 
+					          columnsL="1" 
+					          columnsM="1"
+					          singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>RequestSearch}"/>
+						<SearchField id="searchFieldRequest" 
+									 placeholder="{i18n>SearchPlaceholder}" 
+									 search="onRefresh"/>
+						<Label text="{i18n>DescriptionSearch}"/>
+						<SearchField id="searchFieldDescr" 
+						             placeholder="{i18n>SearchPlaceholder}" 
+						             search="onRefresh"/>
+						<Label text="{i18n>TicketSearch}"/>
+						<SearchField id="searchFieldTicket" 
+						             placeholder="{i18n>SearchPlaceholderTicket}" 
+						             search="onRefresh"/>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+			<List id="requestList" 
+			      items="{ path: '/RequestF4Set', sorter: { path: 'TrorderNumber', descending: false }, suspended: true }"
+				  headerText='{i18n>RequestListTitle}' 
+				  noDataText="{i18n>RequestnoDataText}"
+				  mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" 
+				  growing="true" 
+				  growingScrollToLoad="true"
+				  selectionChange="onSelectionChange">
+				<items>
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" 
+					                press="onSelectionChange" 
+					                intro="{OriginatorKey}"
+						            title="{TrorderNumber}">
+						<ObjectAttribute text="{Description}"/>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+		<semantic:positiveAction>
+			<semantic:PositiveAction text="{i18n>proceed}" 
+			                         press="_onProceed"
+				visible="{= ${Selection>/TargetSysid} &amp;&amp; ${Selection>/Strkorr} ? true : false }"/>
+		</semantic:positiveAction>
+	</semantic:FullscreenPage>
+</mvc:View>
